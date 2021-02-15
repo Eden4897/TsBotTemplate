@@ -108,6 +108,6 @@ build
 
 # JSON files
 *.json
-!package-lock.json
-!package.json
+#!package-lock.json
+#!package.json
 !tsconfig.json
