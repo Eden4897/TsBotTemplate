@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { Command } from '..';
 
 export default {
@@ -10,9 +10,9 @@ export default {
   args: [],
   async execute(bot, msg, args, help) 
   {
-    const pinging = await msg.channel.send(`🏓 Pinging...`);
+    const pinging: Message = await msg.channel.send(`🏓 Pinging...`);
 
-    const embed = new MessageEmbed()
+    const embed: MessageEmbed = new MessageEmbed()
       .setColor(`#3B88C3`)
       .setTitle(`🏓 Pong!`)
       .setDescription(`Bot Latency is **${Math.floor(pinging.createdTimestamp - msg.createdTimestamp)} ms** \nAPI Latency is **${Math.round(bot.ws.ping)} ms**`);

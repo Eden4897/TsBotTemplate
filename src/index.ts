@@ -73,12 +73,12 @@ export interface Command
   execute: (bot: Client, msg: Message, args: Array<string>, help: MessageEmbed) => any
 }
 
-export const commands = new Collection<string, Command>();
+export const commands: Collection<string, Command> = new Collection<string, Command>();
 
 readdir(`${__dirname}\\commands/`, (err, files) => 
 {
   if (err) return console.error;
-  files.forEach(file => 
+  files.forEach((file: string) => 
     {
       if (!file.endsWith(`.js`)) return;
       const command: Command = require(`${__dirname}\\commands/${file}`).default;
@@ -90,7 +90,7 @@ readdir(`${__dirname}\\commands/`, (err, files) =>
 readdir(`${__dirname}\\events/`, (err, files) => 
 {
   if (err) return console.error;
-  files.forEach(file => 
+  files.forEach((file: string) => 
     {
       if (!file.endsWith(`.js`)) return;
       const event: () => any = require(`${__dirname}\\events\\${file}`).default;

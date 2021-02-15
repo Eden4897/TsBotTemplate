@@ -20,7 +20,7 @@ export default async (bot: Client, msg: Message) =>
     return p;
   }, {a: ['']}).a;
 
-  let message = msg.content.substring(0);
+  let message: string = msg.content.substring(0);
 
   if (message.substring(0, config.PREFIX.length) == config.PREFIX) 
   {
