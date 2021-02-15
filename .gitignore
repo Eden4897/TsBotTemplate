@@ -104,7 +104,7 @@ dist
 .tern-port
 
 # Typescript build output
-built
+build
 
 # JSON files
 *.json
