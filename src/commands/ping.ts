@@ -1,13 +1,11 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from '..';
 
-export default {
+export default new Command({
   name: `ping`,
-  description: `Ping!`,
+  description: `Gives you the ping of the bot in miliseconds`,
   usage: `{p}ping`,
   example: `{p}ping`,
-  admin: false,
-  args: [],
   async execute(bot, msg, args, help) 
   {
     const pinging: Message = await msg.channel.send(`🏓 Pinging...`);
@@ -20,4 +18,4 @@ export default {
     pinging.delete();
     await msg.channel.send(embed);
   },
-} as Command;
+});

@@ -1,6 +1,6 @@
 import { Client, Collection, GuildMember, Message, MessageEmbed} from 'discord.js';
 import { readdir } from 'fs';
-import * as config from './config.json';
+import config from './util/global';
 
 export const bot: Client = new Client();
 
@@ -23,6 +23,12 @@ export enum ArgumentType{
   ChannelMention,
   RoleMention,
   ID
+}
+
+export enum CommandType{
+  All,
+  DM,
+  Guild
 }
 
 export function testArgument(argType: ArgumentType, value: string): boolean
@@ -62,26 +68,32 @@ export function testArgument(argType: ArgumentType, value: string): boolean
   }
 }
 
-export interface Command
+export class Command
 {
-  name: string,
-  description: string,
-  usage: string,
-  example: string,
-  admin: boolean,
-  args: Array<ArgumentType | Array<ArgumentType>>,
-  execute: (bot: Client, msg: Message, args: Array<string>, help: MessageEmbed) => any
+  name: string;
+  description: string;
+  usage: string;
+  example: string;
+  admin?: boolean = false;
+  type?: CommandType = CommandType.All;
+  cd?: number = 0;
+  aliases?: Array<string> = [];
+  args?: Array<ArgumentType | Array<ArgumentType>> = [];
+  execute: (bot: Client, msg: Message, args: Array<string>, help: MessageEmbed, cdReset: () => any) => any;
+  constructor(opt: Command){
+    Object.assign(this, opt);
+  }
 }
 
 export const commands: Collection<string, Command> = new Collection<string, Command>();
 
-readdir(`${__dirname}\\commands/`, (err, files) => 
+readdir(`${__dirname}\\commands`, (err, files) => 
 {
   if (err) return console.error;
   files.forEach((file: string) => 
     {
       if (!file.endsWith(`.js`)) return;
-      const command: Command = require(`${__dirname}\\commands/${file}`).default;
+      const command: Command = require(`${__dirname}\\commands\\${file}`).default;
       commands.set(command.name, command);
     }
   )

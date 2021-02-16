@@ -1,5 +1,7 @@
 import { Client, Message, MessageEmbed } from 'discord.js';
-import { ArgumentType, Command, commands, testArgument, config } from '..';
+import { ArgumentType, Command, commands, testArgument, config, CommandType } from '..';
+
+let recentCommands: Array<string> = [];
 
 export default async (bot: Client, msg: Message) =>
 {
@@ -28,33 +30,50 @@ export default async (bot: Client, msg: Message) =>
     {
       try 
       {
-        if (commands.get(args[0]).admin && !await msg.member.hasPermission('MANAGE_GUILD')) 
+        const command: Command = commands.get(args[0]) || commands.find(cmd => cmd.aliases.includes(args[0]));
+        if(command.type == CommandType.DM && msg.guild)
+        {
+          return msg.channel.send('This command can only be used in DMs!');
+        }
+        if((command.type == CommandType.Guild || command.admin) && !msg.guild)
+        {
+          return msg.channel.send('This command can only be used in a guild!');
+        }
+        if(recentCommands.includes(`${msg.author.id}-${args[0]}`)){
+          return msg.channel.send('Please wait a while before using this command again.');
+        }
+        if (command.admin && !await msg.member.hasPermission('MANAGE_GUILD')) 
         {
           return msg.channel.send(`Access denied.`);
         }
-        const command: Command = commands.get(args[0]);
 
         const embed: MessageEmbed = new MessageEmbed()
           .setTitle(`Command: ${config.PREFIX}${args[0]}`)
           .setDescription(
             `**Description: **`
-            + command.description.replace(/{p}/g, config.PREFIX).replace(/(?<=\n) +/g, '')
+            + command.description.replace(/{p}/g, config.PREFIX)
             + `\n`
+
+            + (command.aliases.length > 0 ? 
+              `**Aliases: **\n`
+              + command.aliases.join(' ')
+              + '\n':
+              '')
     
             + `**Usage: **`
-            + command.usage.includes(`\n`) ? `\n` : ``
+            + (command.usage.includes(`\n`) ? `\n` : ``)
             + command.usage.replace(/{p}/g, config.PREFIX).replace(/(?<=\n) +/g, '')
             + `\n`
     
             + `**Examples: **`
-            + command.example.includes(`\n`) ? `n` : ``
+            + (command.example.includes(`\n`) ? `n` : ``)
             + command.example.replace(/{p}/g, config.PREFIX).replace(/(?<=\n) +/g, '')
           )
 
         if (command.args.some((argTypes, index) => 
               {
-                if(typeof argTypes == typeof ArgumentType){
-                  argTypes = [argTypes as ArgumentType];
+                if(!Array.isArray(argTypes)){
+                  argTypes = [argTypes as unknown as ArgumentType];
                 }
                 return (argTypes as Array<ArgumentType>).some(argType => testArgument(argType, args[index]));
               }
@@ -63,7 +82,20 @@ export default async (bot: Client, msg: Message) =>
         {
           return msg.channel.send(embed);
         }
-        await commands.get(args[0]).execute(bot, msg, args.slice(1), embed);
+        recentCommands.push(`${msg.author.id}-${args[0]}`);
+
+        setTimeout(() => 
+          {
+            recentCommands = recentCommands.filter(r => r != `${msg.author.id}-${args[0]}`);
+          },  
+          command.cd
+        );
+
+        await command.execute(bot, msg, args.slice(1), embed, () => 
+          {
+            recentCommands = recentCommands.filter(r => r != `${msg.author.id}-${args[0]}`);
+          }
+        );
 
       } catch (err) 
       {
