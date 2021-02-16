@@ -6,10 +6,14 @@ run template-cleanup.bat
 ## Setup
 Delete the .vscode folder if you are not using visual studio code.
 
+Install typescript if you have not already:
+```
+npm i typescript -g
+```
+Then run
 ```
 npm init -y
 npm i discord.js
-npm i typescript -g
 mkdir build
 ```
 ### Setup with config.json
@@ -185,7 +189,7 @@ A function that will be called when the command is ran by a member.
 * `msg: Message`: The discord message sent by the member that started this command
 * `args: Array<string>`: An array of arguments in the command that the member started. Note that the command itself will not be included in this array
 * `help: MessageEmbed`: The help embed that is constructed from the `name`, `description`, `usage` and `example` provided
-* `cdReset: () => any`: A function when called that will reset the cooldown of the command, allowing the user to use the comamnd right after
+* `cdReset: () => any`: A function when called that will reset the cooldown of the command, allowing the user to use the comamnd right afterwards
 
 #### Example:
 ```
