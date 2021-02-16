@@ -48,26 +48,26 @@ node index.js
 whenever you made some changes to the typescript and want to run the transpiled js.
 
 # Usage
-# Command handler
+## Command handler
 The command handler loads all commands from the `src/commands` folder. All commands must use the `Command` interface which can be imported from `src/index.js`. Commands can be placed in nested folders inside `src/commands` folder since the command handler can read files recursively. Here are the properties of the interface.
 
-## The `name` property
+### The `name` property
 A string that would be the command's name in the bot
 #### Example:
 ```
 name: `ping`
 ```
 
-## The `description` property
+### The `description` property
 A string that would be the command's description in the information embed
 #### Example:
 ```
 description: `Gives you the ping of the bot in miliseconds`
 ```
 
-## The `usage` property
+### The `usage` property
 A string that lists out all the variants of the command. Use `{p}` in place of the command. All spaces that follow a new line will be trimmed away for code styling purposes.
-### Example:
+#### Example:
 ```
 usage: `{p}purge bot [amount]
         {p}purge human [amount]
@@ -80,10 +80,10 @@ The string will be trimmed to this:
 {p}purge images [amount]
 ```
 
-## The `example` property
+### The `example` property
 A string that demonstrates how all variants of the command would be used. Use `{p}` in place of the command. All spaces that follow a new line will be trimmed away for code styling purposes.
 
-### Example:
+#### Example:
 ```
 usage: `{p}purge bot 20
         {p}purge human 50
@@ -96,17 +96,17 @@ The string will be trimmed to this:
 {p}purge images 80
 ```
 
-## The `admin` property (optional)
+### The `admin` property (optional)
 A boolean that indicates if the user needs `MANAGE_GUILD` permissions to use this command. If this is set to true, the command can only be used in a guild.
 
 Default: `false`
 
-### Example:
+#### Example:
 ```
 admin: true
 ```
 
-## The `type` property (optional)
+### The `type` property (optional)
 An enum value from the enum `CommandType` which can be imported from `src/index.js`.
 * `CommandType.All`: The command can be used in DMs and guilds
 * `CommandType.DM`: The command can only be used in DMs
@@ -114,7 +114,7 @@ An enum value from the enum `CommandType` which can be imported from `src/index.
 
 Default: `CommandType.All`
 
-### Example:
+#### Example:
 ```
 usage: `{p}purge bot 20
         {p}purge human 50
@@ -132,17 +132,17 @@ A number that represents the cooldown between another use of this command of the
 
 Default: `0`
 
-### Example:
+#### Example:
 ```
 cd: 1000
 ```
 
-## The `aliases` property (optional)
+### The `aliases` property (optional)
 An array of strings that can also be used to call the command other than the `name`.
 
 Default: `[]`
 
-### Example:
+#### Example:
 ```
 aliases: ['foo', 'bar']
 ```
@@ -169,7 +169,7 @@ Posible values:
 
 Default: `[]`
 
-### Example:
+#### Example:
 ```
 args: [ArgumentType.MemberMention, ArgumentType.String]
 ```
@@ -178,7 +178,7 @@ If you want the user to be able to enter multiple types in the same argument, re
 args: [[ArgumentType.MemberMention, ArgumentType.ID], ArgumentType.String]
 ```
 
-## The `execute` property
+### The `execute` property
 A function that will be called when the command is ran by a member.
 
 * `bot: Client`: The discord client of the token provided in config.json
@@ -187,7 +187,7 @@ A function that will be called when the command is ran by a member.
 * `help: MessageEmbed`: The help embed that is constructed from the `name`, `description`, `usage` and `example` provided
 * `cdReset: () => any`: A function when called that will reset the cooldown of the command, allowing the user to use the comamnd right after
 
-### Example:
+#### Example:
 ```
 async execute(bot, msg, args, help) 
 {
@@ -195,8 +195,8 @@ async execute(bot, msg, args, help)
 }
 ```
 
-# Event handler
+## Event handler
 All files inside the `src/events` folder will be binded to a discord event. The event binded will be according to the name of the file (with the .ts/.js removed). The files inside the `src/events` folder should defaultly export a function. The first parameter of the function will always be a `Client`, followed with the parameters of the discord event. View the discord events and event parameters [here](https://discord.js.org/#/docs/main/stable/class/Client) under the `Event` column.
 
-# Config variables
+## Config variables
 You can inport all the config variables from `src/index.ts`, or from `src/util/global.ts`.
