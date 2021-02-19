@@ -13,7 +13,7 @@ npm i typescript -g
 Then run
 ```
 npm init -y
-npm i discord.js
+npm i discord.js @types/node @types/ws
 mkdir build
 ```
 ### Setup with config.json
@@ -41,15 +41,14 @@ You can also have typescript watch for changes and automatically transpile if ch
 ```
 tsc --watch
 ```
-and after you:
+Then, open a new terminal and
 ```
 cd src
 ```
-you can run 
+then run this whenever you made some changes to the typescript and want to run the transpiled js
 ```
 node index.js
 ```
-whenever you made some changes to the typescript and want to run the transpiled js.
 
 # Usage
 ## Command handler
