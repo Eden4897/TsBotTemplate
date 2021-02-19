@@ -131,7 +131,7 @@ The string will be trimmed to this:
 ```
 
 ## The `cd` property (optional)
-A number that represents the cooldown between another use of this command of the same user.
+A number that represents the cooldown between another use of this command of the same user (in ms).
 
 Default: `0`
 
