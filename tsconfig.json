@@ -6,8 +6,11 @@
       "outDir": "./build",
       "module": "commonjs",
       "resolveJsonModule": true,
+      "sourceMap": true,
+      "noImplicitAny": true
     },
     "include": [
-        "./src/**/*"
+        "./src/**/*",
+        "./src/*.json"
     ]
 }
