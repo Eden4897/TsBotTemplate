@@ -41,7 +41,7 @@ tsc
 ```
 then this to run the transpiled javascript:
 ```
-cd src
+cd build
 node index.js
 ```
 
@@ -51,7 +51,7 @@ tsc --watch
 ```
 Then, open a new terminal and
 ```
-cd src
+cd build
 ```
 then run this whenever you made some changes to the typescript and want to run the transpiled js
 ```
