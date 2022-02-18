@@ -23,7 +23,6 @@ Then run
 ```
 npm init -y
 npm i discord.js @types/node @types/ws
-mkdir build
 ```
 ### Setup with config.json
 Rename `config.json.example` to `config.json` and fill in the `PREFIX` and `TOKEN`.
