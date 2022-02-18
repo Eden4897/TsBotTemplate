@@ -2,7 +2,7 @@ import { Client, Collection, Message, MessageEmbed } from 'discord.js';
 import { readdir } from 'fs';
 import config from './util/global';
 
-export const bot: Client = new Client();
+export const bot: Client = new Client({ intents: 49151 }); //use 48893 if no privileged intents (GUILD_PRESENCES and GUILD_MEMBERS)
 
 export { config };
 

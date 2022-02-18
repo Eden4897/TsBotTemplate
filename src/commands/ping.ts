@@ -24,6 +24,6 @@ export default new Command({
       );
 
     pinging.delete();
-    await msg.channel.send(embed);
+    await msg.channel.send({ embeds: [embed] });
   }
 });

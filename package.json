@@ -14,7 +14,7 @@
     "url": "https://github.com/Eden4897/TsBotTemplate/issues"
   },
   "dependencies": {
-    "discord.js": "^12.5.1"
+    "discord.js": "^13.6.0"
   },
   "scripts": {
     "clean": "",

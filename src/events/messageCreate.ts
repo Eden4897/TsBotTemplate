@@ -54,7 +54,7 @@ export default async (bot: Client, msg: Message) => {
         }
         if (
           command.admin &&
-          !(await msg.member.hasPermission('MANAGE_GUILD'))
+          !(await msg.member.permissions.has('MANAGE_GUILD'))
         ) {
           return msg.channel.send(`Access denied.`);
         }
@@ -63,22 +63,22 @@ export default async (bot: Client, msg: Message) => {
           .setTitle(`Command: ${config.PREFIX}${args[0]}`)
           .setDescription(
             `**Description: **` +
-              command.description.replace(/{p}/g, config.PREFIX) +
-              `\n` +
-              (command.aliases.length > 0
-                ? `**Aliases: **\n` + command.aliases.join(' ') + '\n'
-                : '') +
-              `**Usage: **` +
-              (command.usage.includes(`\n`) ? `\n` : ``) +
-              command.usage
-                .replace(/{p}/g, config.PREFIX)
-                .replace(/(?<=\n) +/g, '') +
-              `\n` +
-              `**Examples: **` +
-              (command.example.includes(`\n`) ? `n` : ``) +
-              command.example
-                .replace(/{p}/g, config.PREFIX)
-                .replace(/(?<=\n) +/g, '')
+            command.description.replace(/{p}/g, config.PREFIX) +
+            `\n` +
+            (command.aliases.length > 0
+              ? `**Aliases: **\n` + command.aliases.join(' ') + '\n'
+              : '') +
+            `**Usage: **` +
+            (command.usage.includes(`\n`) ? `\n` : ``) +
+            command.usage
+              .replace(/{p}/g, config.PREFIX)
+              .replace(/(?<=\n) +/g, '') +
+            `\n` +
+            `**Examples: **` +
+            (command.example.includes(`\n`) ? `n` : ``) +
+            command.example
+              .replace(/{p}/g, config.PREFIX)
+              .replace(/(?<=\n) +/g, '')
           );
 
         if (
@@ -91,7 +91,7 @@ export default async (bot: Client, msg: Message) => {
             );
           })
         ) {
-          return msg.channel.send(embed);
+          return msg.channel.send({ embeds: [embed] });
         }
         recentCommands.push(`${msg.author.id}-${args[0]}`);
 
@@ -112,7 +112,7 @@ export default async (bot: Client, msg: Message) => {
           .send(
             `There was an error trying to execute the ${args[0]} command! Please contact the admins.`
           )
-          .catch(() => {});
+          .catch(() => { });
       }
     }
   }
