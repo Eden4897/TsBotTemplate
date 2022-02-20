@@ -1,16 +1,11 @@
 # Typescript template for discord bots
 ## Template cleanup
-### Windows
-```
-run template-cleanup.bat
-```
-### Non Windows
 1. Add these 2 lines into the gitignore
 ```
 !package-lock.json
 !package.json
 ```
-2. Delete readme.md and template-cleanup.bat
+2. Delete readme.md
 3. Commit the changes to git (not compulsary)
 ## Setup
 Delete the .vscode folder if you are not using visual studio code.

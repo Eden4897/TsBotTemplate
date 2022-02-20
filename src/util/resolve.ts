@@ -3,7 +3,6 @@ import {
   Guild,
   GuildMember,
   Role,
-  TextChannel,
   User
 } from 'discord.js';
 import { bot } from '..';

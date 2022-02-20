@@ -1,5 +1,3 @@
 node_modules/
 build
 *.json
-!package-lock.json
-!package.json
