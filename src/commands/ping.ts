@@ -1,17 +1,9 @@
-import { Client, Message, MessageEmbed } from 'discord.js';
-import { Command } from '..';
+import { Client, Message, MessageEmbed } from "discord.js";
+import { Command } from "..";
 
 export default new Command({
   name: `ping`,
-  description: `Gives you the ping of the bot in miliseconds`,
-  usage: `{p}ping`,
-  example: `{p}ping`,
-  async execute(
-    bot: Client,
-    msg: Message,
-    args: Array<String>,
-    help: MessageEmbed
-  ) {
+  async execute(bot: Client, msg: Message, args: Array<String>) {
     const pinging: Message = await msg.channel.send(`🏓 Pinging...`);
 
     const embed: MessageEmbed = new MessageEmbed()
@@ -25,5 +17,5 @@ export default new Command({
 
     pinging.delete();
     await msg.channel.send({ embeds: [embed] });
-  }
+  },
 });
