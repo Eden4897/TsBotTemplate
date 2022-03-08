@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from "discord.js";
-import { Book, Page, PageEntry } from "./book";
+import { Book, PageEntry } from "./book";
 import { ButtonApperance, CallbackButton } from "./interactions";
 
 export type SelectionButton<T> = {

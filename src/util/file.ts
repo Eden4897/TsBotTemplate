@@ -3,11 +3,11 @@ import {
   writeFileSync,
   createWriteStream,
   unlink,
-  existsSync
-} from 'fs';
-import { get } from 'https';
-import { bot } from '../index';
-import { Client } from 'discord.js'
+  existsSync,
+} from "fs";
+import { get } from "https";
+import { bot } from "../index";
+import { Client } from "discord.js";
 
 export class JSONDatabase<T> {
   path: string;
@@ -36,7 +36,7 @@ export class JSONArray<U> extends JSONDatabase<Array<U>> {
       }
     }
     if (!existsSync(path)) {
-      writeFileSync(path, '[]');
+      writeFileSync(path, "[]");
     }
     return this;
   }
@@ -119,10 +119,26 @@ export class JSONArray<U> extends JSONDatabase<Array<U>> {
     }
     return _;
   }
-  reduce(callback: (previousValue: U, currentValue: U, currentIndex: number, array: Array<U>) => U, initialValue: any = null) {
+  reduce(
+    callback: (
+      previousValue: U,
+      currentValue: U,
+      currentIndex: number,
+      array: Array<U>
+    ) => U,
+    initialValue: any = null
+  ) {
     return this.read().reduce(callback, initialValue);
   }
-  reduceRight(callback: (previousValue: U, currentValue: U, currentIndex: number, array: Array<U>) => U, initialValue: any = null) {
+  reduceRight(
+    callback: (
+      previousValue: U,
+      currentValue: U,
+      currentIndex: number,
+      array: Array<U>
+    ) => U,
+    initialValue: any = null
+  ) {
     return this.read().reduceRight(callback, initialValue);
   }
   reverse(write = true) {
@@ -133,7 +149,7 @@ export class JSONArray<U> extends JSONDatabase<Array<U>> {
     return _;
   }
   shift(write = true) {
-    const _ = this.read()
+    const _ = this.read();
     _.shift();
     if (write) {
       this.write(_);
@@ -175,8 +191,8 @@ export class JSONArray<U> extends JSONDatabase<Array<U>> {
     return this.read().values();
   }
 }
-export class JSONMap extends JSONDatabase<{
-  [key: string]: any
+export class JSONMap<T> extends JSONDatabase<{
+  [key: string]: T;
 }> {
   constructor(path: string, readOnly = false) {
     super(path);
@@ -191,55 +207,83 @@ export class JSONMap extends JSONDatabase<{
       }
     }
     if (!existsSync(path)) {
-      writeFileSync(path, '{}');
+      writeFileSync(path, "{}");
     }
     return this;
   }
-  set(key: string, value: any) {
+  set(
+    key: string,
+    value: T
+  ): {
+    [key: string]: T;
+  } {
     const _ = this.read();
     _[key] = value;
     return this.write(_);
   }
-  unset(key: string) {
+  unset(key: string): {
+    [key: string]: T;
+  } {
     const _ = this.read();
     delete _[key];
     return this.write(_);
   }
-  get(key: string) {
+  get(key: string): T {
     return this.read()[key];
   }
-  getKey(value: any) {
-    return Object.keys(this.read()).find((key) => this.read()[key] === value);
+  getKey(value: T): keyof T {
+    return Object.keys(this.read()).find(
+      (key) => this.read()[key] === value
+    ) as keyof T;
   }
-  increment(key: string, amount: number) {
-    if (!(key in this.read())) {
-      this.set(key, 0);
-    }
-    if (isNaN(this.read()[key])) {
-      throw new Error('Not a number');
-    }
-    this.set(key, this.get(key) + amount);
-  }
-  keys() {
+  keys(): string[] {
     return Object.keys(this.read());
   }
-  values() {
+  values(): T[] {
     return Object.values(this.read());
   }
-  entries() {
+  entries(): [string, T][] {
     return Object.entries(this.read());
   }
 }
 
+export class JSONIntegerMap extends JSONMap<number> {
+  increment(key: string, amount: number): number {
+    if (!(key in this.read())) {
+      this.set(key, 0);
+    }
+    if (isNaN(this.read()[key])) {
+      throw new Error("Not a number");
+    }
+    this.set(key, this.get(key) + amount);
+    return this.get(key);
+  }
+}
+
+export class JSONObjectMap<
+  T extends {
+    [attribute: string]: any;
+  }
+> extends JSONMap<T> {
+  setAttribute(key: string, attibute: keyof T, value: any) {
+    const _ = this.read();
+    _[key][attibute] = value;
+    return this.write(_);
+  }
+}
+
 export class JSONScheduler extends JSONArray<{
-  date: any
-  args: Array<string>
+  date: string;
+  args: Array<string>;
 }> {
   eventHandler: (bot: Client, ...args: Array<string>) => void;
-  constructor(eventHandler: (bot: Client, ...args: Array<string>) => void, path: string = 'schedule.json') {
+  constructor(
+    eventHandler: (bot: Client, ...args: Array<string>) => void,
+    path: string = "schedule.json"
+  ) {
     super(path);
     this.eventHandler = eventHandler;
-    bot.on('ready', async () => {
+    bot.on("ready", async () => {
       await new Promise((_) => setTimeout(_, 1000));
       this.checkEvents();
       setInterval(() => this.checkEvents(), 60 * 1000);
@@ -256,20 +300,21 @@ export class JSONScheduler extends JSONArray<{
   schedule(date: Date, ...args: Array<string>) {
     this.push({
       date: date.toString(),
-      args
+      args,
     });
   }
 }
 
-export async function download(url: string, dest = url.split('/').pop()) { //destination defaulted to the file name in the url
+export async function download(url: string, dest = url.split("/").pop()) {
+  //destination defaulted to the file name in the url
   return new Promise((res, rej) => {
     let file = createWriteStream(dest);
     get(url, function (response) {
       response.pipe(file);
-      file.on('finish', function () {
+      file.on("finish", function () {
         res(file.path);
       });
-    }).on('error', function (err) {
+    }).on("error", function (err) {
       unlink(dest, () => rej(err));
     });
   });

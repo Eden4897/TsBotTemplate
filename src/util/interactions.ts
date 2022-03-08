@@ -1,6 +1,5 @@
 import {
   EmojiIdentifierResolvable,
-  Interaction,
   Message,
   MessageActionRow,
   MessageButton,

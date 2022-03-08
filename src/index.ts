@@ -91,7 +91,6 @@ export class Command {
   type?: CommandType = CommandType.All;
   cd?: number = 0;
   aliases?: Array<string> = [];
-  guildDependentAliases?: JSONMap;
   argTypes?: Array<ArgumentType | Array<ArgumentType>> = [];
   execute: (
     bot: Client,

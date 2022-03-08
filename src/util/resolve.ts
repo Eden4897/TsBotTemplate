@@ -1,16 +1,10 @@
-import {
-  Channel,
-  Guild,
-  GuildMember,
-  Role,
-  User
-} from 'discord.js';
-import { bot } from '..';
+import { Channel, Guild, GuildMember, Role, User } from "discord.js";
+import { bot } from "..";
 
 export function resolveMember(value: string, guild: Guild): GuildMember {
   if (
-    value.slice(0, 2) == '<@' &&
-    value[20] == '>' &&
+    value.slice(0, 2) == "<@" &&
+    value[20] == ">" &&
     !isNaN(+value.slice(2, 20))
   ) {
     value = value.slice(2, 20);
@@ -25,8 +19,8 @@ export function resolveMember(value: string, guild: Guild): GuildMember {
 
 export function resolveUser(value: string): User {
   if (
-    value.slice(0, 2) == '<@' &&
-    value[20] == '>' &&
+    value.slice(0, 2) == "<@" &&
+    value[20] == ">" &&
     !isNaN(+value.slice(2, 20))
   ) {
     value = value.slice(2, 20);
@@ -39,8 +33,8 @@ export function resolveUser(value: string): User {
 
 export function resolveChannel(value: string, guild: Guild): Channel {
   if (
-    value.slice(0, 2) == '<#' &&
-    value[20] == '>' &&
+    value.slice(0, 2) == "<#" &&
+    value[20] == ">" &&
     !isNaN(+value.slice(2, 20))
   ) {
     value = value.slice(2, 20);
@@ -53,8 +47,8 @@ export function resolveChannel(value: string, guild: Guild): Channel {
 
 export function resolveRole(value: string, guild: Guild): Role {
   if (
-    value.slice(0, 3) == '<@&' &&
-    value[21] == '>' &&
+    value.slice(0, 3) == "<@&" &&
+    value[21] == ">" &&
     !isNaN(+value.slice(3, 21))
   ) {
     value = value.slice(3, 21);
