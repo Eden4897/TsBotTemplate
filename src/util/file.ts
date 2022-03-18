@@ -17,12 +17,12 @@ export class JSONDatabase<T> {
   read(): T {
     return JSON.parse(readFileSync(this.path).toString());
   }
-  write(data: T) {
+  write(data: T): T {
     writeFileSync(this.path, JSON.stringify(data, null, 4));
     return this.read();
   }
 }
-export class JSONArray<U> extends JSONDatabase<Array<U>> {
+export class JSONArray<T> extends JSONDatabase<Array<T>> {
   constructor(path: string, readOnly = false) {
     super(path);
     if (readOnly) {
@@ -43,34 +43,34 @@ export class JSONArray<U> extends JSONDatabase<Array<U>> {
   at(index: number) {
     return this.read()[index];
   }
-  concat(other: Array<U>) {
+  concat(other: Array<T>) {
     return this.write(this.read().concat(other));
   }
   entries() {
     return this.read().entries();
   }
-  every(condition: (value: U, index: number, array: Array<U>) => boolean) {
+  every(condition: (value: T, index: number, array: Array<T>) => boolean) {
     return this.read().every(condition);
   }
-  filter(condition: (value: U, index: number, array: Array<U>) => boolean) {
+  filter(condition: (value: T, index: number, array: Array<T>) => boolean) {
     return this.read().filter(condition);
   }
-  find(condition: (value: U, index: number, array: Array<U>) => boolean) {
+  find(condition: (value: T, index: number, array: Array<T>) => boolean) {
     return this.read().find(condition);
   }
-  findIndex(condition: (value: U, index: number, array: Array<U>) => boolean) {
+  findIndex(condition: (value: T, index: number, array: Array<T>) => boolean) {
     return this.read().findIndex(condition);
   }
   flat() {
     return this.read().flat();
   }
-  forEach(callbackfn: (value: U, index: number, array: Array<U>) => void) {
+  forEach(callbackfn: (value: T, index: number, array: Array<T>) => void) {
     return this.read().forEach(callbackfn);
   }
-  includes(element: U) {
+  includes(element: T) {
     return this.read().includes(element);
   }
-  indexOf(element: U) {
+  indexOf(element: T) {
     return this.read().indexOf(element);
   }
   join(seperator?: string) {
@@ -79,10 +79,10 @@ export class JSONArray<U> extends JSONDatabase<Array<U>> {
   keys() {
     return this.read().keys;
   }
-  lastIndexOf(element: U) {
+  lastIndexOf(element: T) {
     return this.read().lastIndexOf(element);
   }
-  map(callback: (element: U) => U) {
+  map(callback: (element: T) => T) {
     return this.read().map(callback);
   }
   pop(write = true) {
@@ -93,7 +93,7 @@ export class JSONArray<U> extends JSONDatabase<Array<U>> {
     }
     return _;
   }
-  push(element: U, write = true) {
+  push(element: T, write = true) {
     const _ = this.read();
     _.push(element);
     if (write) {
@@ -101,7 +101,7 @@ export class JSONArray<U> extends JSONDatabase<Array<U>> {
     }
     return _;
   }
-  remove(condition: (element: U) => void, write = true) {
+  remove(condition: (element: T) => void, write = true) {
     const _ = this.read();
     _.splice(_.findIndex(condition), 1);
     if (write) {
@@ -109,7 +109,7 @@ export class JSONArray<U> extends JSONDatabase<Array<U>> {
     }
     return _;
   }
-  removeAll(condition: (element: U) => void, write = true) {
+  removeAll(condition: (element: T) => void, write = true) {
     const _ = this.read();
     while (_.findIndex(condition) != -1) {
       _.splice(_.findIndex(condition), 1);
@@ -121,22 +121,22 @@ export class JSONArray<U> extends JSONDatabase<Array<U>> {
   }
   reduce(
     callback: (
-      previousValue: U,
-      currentValue: U,
+      previousValue: T,
+      currentValue: T,
       currentIndex: number,
-      array: Array<U>
-    ) => U,
+      array: Array<T>
+    ) => T,
     initialValue: any = null
   ) {
     return this.read().reduce(callback, initialValue);
   }
   reduceRight(
     callback: (
-      previousValue: U,
-      currentValue: U,
+      previousValue: T,
+      currentValue: T,
       currentIndex: number,
-      array: Array<U>
-    ) => U,
+      array: Array<T>
+    ) => T,
     initialValue: any = null
   ) {
     return this.read().reduceRight(callback, initialValue);
@@ -163,23 +163,23 @@ export class JSONArray<U> extends JSONDatabase<Array<U>> {
     }
     return _;
   }
-  some(condition: (value: U, index: number, array: Array<U>) => boolean) {
+  some(condition: (value: T, index: number, array: Array<T>) => boolean) {
     return this.read().some(condition);
   }
-  sort(compareFn: (a: U, b: U) => number, write = true) {
+  sort(compareFn: (a: T, b: T) => number, write = true) {
     const _ = this.read().sort(compareFn);
     if (write) {
       this.write(_);
     }
     return _;
   }
-  splice(start: number, deleteCount: number = 0, ...items: Array<U>) {
+  splice(start: number, deleteCount: number = 0, ...items: Array<T>) {
     return this.read().splice(start, deleteCount, ...items);
   }
   toString() {
     return this.read().toString();
   }
-  unshift(items: Array<U>, write = true) {
+  unshift(items: Array<T>, write = true) {
     const _ = this.read();
     _.unshift(...items);
     if (write) {
