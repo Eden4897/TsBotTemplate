@@ -24,8 +24,8 @@ export class CallbackButton extends ButtonApperance {
     buttonUpdater: (
       buttonIndex: number,
       newButton: CallbackButton
-    ) => Promise<void>
-  ) => Promise<void> | void;
+    ) => Promise<any>
+  ) => Promise<any> | any;
 }
 
 export async function attachCallbackButtons(
