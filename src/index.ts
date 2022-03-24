@@ -108,7 +108,7 @@ export const commands: Collection<string, Command> = new Collection<
   Command
 >();
 
-readdir(`${__dirname}\\commands`, (err, files) => {
+readdir(path.join(__dirname, "commands"), (err, files) => {
   if (err) return console.error;
   files.forEach((file: string) => {
     if (!file.endsWith(`.js`)) return;
@@ -117,7 +117,7 @@ readdir(`${__dirname}\\commands`, (err, files) => {
   });
 });
 
-readdir(`${__dirname}\\events/`, (err, files) => {
+readdir(path.join(__dirname, "events"), (err, files) => {
   if (err) return console.error;
   files.forEach((file: string) => {
     if (!file.endsWith(`.js`)) return;
